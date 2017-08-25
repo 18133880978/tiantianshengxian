@@ -6,6 +6,7 @@
 	<title>天天生鲜-用户中心</title>
 	<link rel="stylesheet" type="text/css" href="{% static 'user/css/reset.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'user/css/main.css' %}">
+	<script type="text/javascript" src="{% static 'user/js/common.js' %}"></script>
 </head>
 <body>
 	<div class="header_con">
@@ -13,7 +14,10 @@
 			<div class="welcome fl">欢迎来到天天生鲜!</div>
 			<div class="fr">
 				<div class="login_info fl">
-					欢迎您：<em>张 山</em>
+					欢迎您：<em>{{ username }}</em>
+				</div>
+				<div class="logout fl">
+					<a href="/user/logout">[退出]</a>
 				</div>
 				<div class="login_btn fl">
 					<a href="login.html">登录</a>

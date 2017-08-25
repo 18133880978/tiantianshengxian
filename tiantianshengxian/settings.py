@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'df_user',
+    'df_goods',
+    'tinymce',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -81,7 +83,7 @@ DATABASES = {
         'NAME': 'tiantian',
         'USER': 'lianghaitao',
         'PASSWORD': '123456',
-        'HOST': '192.168.1.19',
+        'HOST': '192.168.31.147',
         "PORT": '3306',
     }
 }
@@ -109,3 +111,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
+
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': 'advanced',
+    'width': 600,
+    'height': 400,
+}
