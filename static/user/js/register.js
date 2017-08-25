@@ -42,14 +42,21 @@ $(function(){
 		var len = $('#user_name').val().length;
 		if(len<5||len>20)
 		{
-			$('#user_name').next().html('请输入5-20个字符的用户名')
-			$('#user_name').next().show();
+			$('#user_name').next().html('请输入5-20个字符的用户名').show();
 			error_name = true;
 		}
 		else
 		{
-			$('#user_name').next().hide();
-			error_name = false;
+			$.get('/user/register_exist?username='+$('#user_name').val(),function (data) {
+				if (data.count!=0){
+					$('#user_name').next().html('用户名已存在').show();
+					error_name = true;
+				}else{
+					$('#user_name').next().hide();
+					error_name = false;
+				}
+			})
+
 		}
 	}
 
@@ -105,7 +112,7 @@ $(function(){
 	}
 
 
-	$('#reg_form').submit(function() {
+	$('.reg_form').submit(function() {
 		check_user_name();
 		check_pwd();
 		check_cpwd();
