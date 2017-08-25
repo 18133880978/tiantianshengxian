@@ -81,7 +81,7 @@ DATABASES = {
         'NAME': 'tiantian',
         'USER': 'lianghaitao',
         'PASSWORD': '123456',
-        'HOST': '192.168.1.19',
+        'HOST': '192.168.1.29',
         "PORT": '3306',
     }
 }
