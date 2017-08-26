@@ -8,6 +8,7 @@ class TypeInfoAdmin(admin.ModelAdmin):
 
 class GoodsInfoAdmin(admin.ModelAdmin):
     list_per_page = 20
+    actions_on_bottom = True
     list_display = ['id', 'gtitle', 'gprice', 'gunit', 'gtype_id', 'gstk', 'gpic', 'gintroduce',
                     'gcontent', 'gclick', 'gadv', 'isDelete']
 

@@ -1,15 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from hashlib import *
 from .models import *
 import json
 
 
 # Create your views here.
-# 返回首页
-def index(request):
-    return render(request, 'df_user/index.html')
-
 
 # 返回登陆页面
 def login(request):
