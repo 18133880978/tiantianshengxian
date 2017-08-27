@@ -6,6 +6,7 @@
 	<title>天天生鲜-用户中心</title>
 	<link rel="stylesheet" type="text/css" href="{% static 'user/css/reset.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'user/css/main.css' %}">
+    <script type="text/javascript" src="{% static 'user/js/jquery-1.12.4.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'user/js/common.js' %}"></script>
 </head>
 <body>
@@ -14,7 +15,7 @@
 			<div class="welcome fl">欢迎来到天天生鲜!</div>
 			<div class="fr">
 				<div class="login_info fl">
-					欢迎您：<em>{{ username }}</em>
+					欢迎您：<em>{{ request.session.username }}</em>
 				</div>
 				<div class="logout fl">
 					<a href="/user/logout">[退出]</a>
@@ -26,11 +27,11 @@
 				</div>
 				<div class="user_link fl">
 					<span>|</span>
-					<a href="user_center_info.html">用户中心</a>
+					<a href="/user/info">用户中心</a>
 					<span>|</span>
 					<a href="cart.html">我的购物车</a>
 					<span>|</span>
-					<a href="user_center_order.html">我的订单</a>
+					<a href="/user/order">我的订单</a>
 				</div>
 			</div>
 		</div>		
@@ -67,57 +68,19 @@
 				<h3 class="common_title2">最近浏览</h3>
 				<div class="has_view_list">
 					<ul class="goods_type_list clearfix">
-				<li>
-					<a href="detail.html"><img src="images/goods/goods003.jpg"></a>
-					<h4><a href="detail.html">大兴大棚草莓</a></h4>
-					<div class="operate">
-						<span class="prize">￥16.80</span>
-						<span class="unit">16.80/500g</span>
-						<a href="#" class="add_goods" title="加入购物车"></a>
-					</div>
-				</li>
-
-				<li>
-					<a href="#"><img src="images/goods/goods004.jpg"></a>
-					<h4><a href="#">吐鲁番梨光杏</a></h4>
-					<div class="operate">
-						<span class="prize">￥5.50</span>
-						<span class="unit">5.50/500g</span>
-						<a href="#" class="add_goods" title="加入购物车"></a>
-					</div>
-				</li>
-
-				<li>
-					<a href="#"><img src="images/goods/goods005.jpg"></a>
-					<h4><a href="#">黄肉桃</a></h4>
-					<div class="operate">
-						<span class="prize">￥10.00</span>
-						<span class="unit">10.00/500g</span>
-						<a href="#" class="add_goods" title="加入购物车"></a>
-					</div>
-				</li>
-
-				<li>
-					<a href="#"><img src="images/goods/goods006.jpg"></a>
-					<h4><a href="#">进口西梅</a></h4>
-					<div class="operate">
-						<span class="prize">￥28.80</span>
-						<span class="unit">28.8/500g</span>
-						<a href="#" class="add_goods" title="加入购物车"></a>
-					</div>
-				</li>
-
-				<li>
-					<a href="#"><img src="images/goods/goods007.jpg"></a>
-					<h4><a href="#">香梨</a></h4>
-					<div class="operate">
-						<span class="prize">￥6.45</span>
-						<span class="unit">6.45/500g</span>
-						<a href="#" class="add_goods" title="加入购物车"></a>
-					</div>
-				</li>
-			</ul>
-		</div>
+						{% for goods in goods_list %}
+						<li>
+							<a href="/goods/detail?goods_id={{ goods.id }}"><img src="{% static goods.gpic %}"></a>
+							<h4><a href="/goods/detail?goods_id={{ goods.id }}">{{ goods.gtitle }}</a></h4>
+							<div class="operate">
+								<span class="prize">￥{{ goods.gprice }}</span>
+								<span class="unit">{{ goods.gunit }}</span>
+								<a href="#" class="add_goods" title="加入购物车"></a>
+							</div>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
 		</div>
 	</div>
 

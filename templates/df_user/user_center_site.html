@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'user/css/main.css' %}">
 	<script type="text/javascript" src="{% static 'user/js/jquery-1.12.4.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'user/js/user_center.js' %}"></script>
+	<script type="text/javascript" src="{% static 'user/js/common.js' %}"></script>
 </head>
 <body>
 	<div class="header_con">
@@ -15,7 +16,10 @@
 			<div class="welcome fl">欢迎来到天天生鲜!</div>
 			<div class="fr">
 				<div class="login_info fl">
-					欢迎您：<em>张 山</em>
+					欢迎您：<em>{{ request.session.username }}</em>
+				</div>
+				<div class="logout fl">
+					<a href="/user/logout">[退出]</a>
 				</div>
 				<div class="login_btn fl">
 					<a href="login.html">登录</a>
@@ -35,7 +39,7 @@
 	</div>
 
 	<div class="search_bar clearfix">
-		<a href="../index.html" class="logo fl"><img src="{% static 'user/images/logo.png' %}"></a>
+		<a href="/" class="logo fl"><img src="{% static 'user/images/logo.png' %}"></a>
 		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
 		<div class="search_con fr">
 			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
