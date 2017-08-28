@@ -1,15 +1,13 @@
-from django.shortcuts import render, redirect
-from django.http import JsonResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
+from django.http import JsonResponse
 from hashlib import *
 from .models import *
+from . import user_decorator
 import json
+from df_goods.models import *
 
 
 # Create your views here.
-# 返回首页
-def index(request):
-    return render(request, 'df_user/index.html')
-
 
 # 返回登陆页面
 def login(request):
@@ -30,13 +28,15 @@ def login_handle(request):
         pwd = s1.hexdigest()
 
         user = User.usermanager.filter(username=username)
-        print(user)
         if len(user) == 0:
             context = {'userinfo': '用户名错误', 'username': username, 'pwd': upwd}
             return render(request, 'df_user/login.html', context)
         else:
             if pwd == user[0].passwd:
-                red = HttpResponseRedirect('/user/info')
+                url = request.COOKIES.get('url', '/user/info')
+                red = HttpResponseRedirect(url)
+                # context = {'username': user[0].username, 'mobile': user[0].mobile, 'address': user[0].address}
+                # response = render_to_response('df_user/user_center_info.html', context)
                 if remember != 0:
                     red.set_cookie('username', username)
                 else:
@@ -84,22 +84,37 @@ def register_handle(request):
 # 退出登陆
 def logout(request):
     request.session.flush()
-    return redirect(index)
+    red = HttpResponseRedirect('/')
+    red.set_cookie('url', '', max_age=-1)
+    return red
 
 
 # 返回用户个人信息页面及需要的数据
+@user_decorator.login
 def user_info(request):
+    goods_ids = request.COOKIES.get('goods_ids', '')
+    goods_ids1 = goods_ids.split(',')
+    goods_list = []
+
+    for goods_id in goods_ids1:
+        goods_list.append(GoodsInfo.objects.get(id=int(goods_id)))
+
+
     user = User.usermanager.get(id=request.session['user_id'])
-    context = {'username': user.username, 'mobile': user.mobile, 'address': user.address}
+    context = {'username': user.username, 'mobile': user.mobile, 'address': user.address, 'goods_list': goods_list}
     return render(request, 'df_user/user_center_info.html', context)
 
 
 # 返回用户订单页面及需要的数据
+@user_decorator.login
 def user_order(request):
-    return render(request, 'df_user/user_center_order.html')
+    user = User.usermanager.get(id=request.session['user_id'])
+    context = {'username': user.username}
+    return render(request, 'df_user/user_center_order.html', context)
 
 
 # 返回用户收货地址页面及需要的数据
+@user_decorator.login
 def user_site(request):
     user = User.usermanager.get(id=request.session['user_id'])
 
@@ -117,7 +132,7 @@ def user_site(request):
     address_str = "%s  (%s 收)  %s" % (user.address, user.receiver, user.mobile)
 
     context = {'address_str': address_str, 'receiver': user.receiver, 'address': user.address,
-               'postcodes': user.postcodes, 'mobile': user.mobile}
+               'postcodes': user.postcodes, 'mobile': user.mobile, 'username': user.username}
     return render(request, 'df_user/user_center_site.html', context)
 
 

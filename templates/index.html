@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="{% static 'user/js/jquery-1.12.4.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'user/js/jquery-ui.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'user/js/slide.js' %}"></script>
+	<script type="text/javascript" src="{% static 'user/js/common.js' %}"></script>
 	
 	<script type="application/javascript">
 
@@ -21,7 +22,7 @@
 
 			<div class="fr">
 				<div class="login_info fl" >
-					欢迎您：<em>{{ username }}</em>
+					欢迎您：<em>{{ request.session.username }}</em>
 				</div>
 				<div class="logout fl">
 					<a href="/user/logout">[退出]</a>
@@ -44,7 +45,7 @@
 	</div>
 
 	<div class="search_bar clearfix">
-		<a href="index.html" class="logo fl"><img src="{% static 'user/images/logo.png' %}"></a>
+		<a href="/" class="logo fl"><img src="{% static 'user/images/logo.png' %}"></a>
 		<div class="search_con fl">
 			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
 			<input type="button" class="input_btn fr" name="" value="搜索">
@@ -70,12 +71,12 @@
 
 	<div class="center_con clearfix">
 		<ul class="subnav fl">
-			<li><a href="#model01" class="fruit">新鲜水果</a></li>
-			<li><a href="#model02" class="seafood">海鲜水产</a></li>
-			<li><a href="#model03" class="meet">猪牛羊肉</a></li>
-			<li><a href="#model04" class="egg">禽类蛋品</a></li>
-			<li><a href="#model05" class="vegetables">新鲜蔬菜</a></li>
-			<li><a href="#model06" class="ice">速冻食品</a></li>
+			<li><a href="/goods/list?type_id=1&sort_id=1&page_id=1" class="fruit">新鲜水果</a></li>
+			<li><a href="/goods/list?type_id=2&sort_id=1&page_id=1" class="seafood">海鲜水产</a></li>
+			<li><a href="/goods/list?type_id=3&sort_id=1&page_id=1" class="meet">猪牛羊肉</a></li>
+			<li><a href="/goods/list?type_id=4&sort_id=1&page_id=1" class="egg">禽类蛋品</a></li>
+			<li><a href="/goods/list?type_id=5&sort_id=1&page_id=1" class="vegetables">新鲜蔬菜</a></li>
+			<li><a href="/goods/list?type_id=6&sort_id=1&page_id=1" class="ice">速冻食品</a></li>
 		</ul>
 		<div class="slide fl">
 			<ul class="slide_pics">
@@ -99,9 +100,9 @@
 			<h3 class="fl" id="model01">新鲜水果</h3>
 			<div class="subtitle fl">
 				<span>|</span>
-				<a href="#">鲜芒</a>
-				<a href="#">加州提子</a>
-				<a href="#">亚马逊牛油果</a>
+				{% for hot in hotfruit %}
+					<a href="/goods/detail?goods_id={{ hot.pk }}">{{ hot.gtitle }}</a>
+				{% endfor %}
 			</div>
 			<a href="#" class="goods_more fr" id="fruit_more">查看更多 ></a>
 		</div>
@@ -109,26 +110,13 @@
 		<div class="goods_con clearfix">
 			<div class="goods_banner fl"><img src="{% static 'user/images/banner01.jpg' %}"></div>
 			<ul class="goods_list fl">
-				<li>
-					<h4><a href="#">草莓</a></h4>
-					<a href="#"><img src="{% static 'user/images/goods/goods003.jpg' %}"></a>
-					<div class="prize">¥ 30.00</div>
-				</li>
-				<li>
-					<h4><a href="#">葡萄</a></h4>
-					<a href="#"><img src="{% static 'user/images/goods/goods002.jpg' %}"></a>
-					<div class="prize">¥ 5.50</div>
-				</li>
-				<li>
-					<h4><a href="#">柠檬</a></h4>
-					<a href="#"><img src="{% static 'user/images/goods/goods001.jpg' %}"></a>
-					<div class="prize">¥ 3.90</div>
-				</li>
-				<li>
-					<h4><a href="#">奇异果</a></h4>
-					<a href="#"><img src="{% static 'user/images/goods/goods012.jpg' %}"></a>
-					<div class="prize">¥ 25.80</div>
-				</li>
+				{% for new in newfruit %}
+					<li>
+						<h4><a href="/goods/detail?goods_id={{ new.id }}">{{new.gtitle}}</a></h4>
+						<a href="/goods/detail?goods_id={{ new.id }}"><img src="{% static new.gpic %}"></a>
+						<div class="prize">¥ {{ new.gprice }}</div>
+					</li>
+				{% endfor %}
 			</ul>
 		</div>
 	</div>
@@ -138,8 +126,9 @@
 			<h3 class="fl" id="model02">海鲜水产</h3>
 			<div class="subtitle fl">
 				<span>|</span>
-				<a href="#">河虾</a>
-				<a href="#">扇贝</a>				
+				{% for hot in hotseafood %}
+					<a href="/goods/detail?goods_id={{ hot.id }}">{{ hot.gtitle }}</a>
+				{% endfor %}
 			</div>
 			<a href="#" class="goods_more fr">查看更多 ></a>
 		</div>
@@ -147,26 +136,13 @@
 		<div class="goods_con clearfix">
 			<div class="goods_banner fl"><img src="{% static 'user/images/banner02.jpg' %}"></div>
 			<ul class="goods_list fl">
+				{% for adv in advseafood %}
 				<li>
-					<h4><a href="#">青岛野生海捕大青虾</a></h4>
-					<a href="#"><img src="{% static 'user/images/goods/goods018.jpg' %}"></a>
-					<div class="prize">¥ 48.00</div>
+					<h4><a href="/goods/detail?goods_id={{ adv.id }}">{{ adv.gtitle }}</a></h4>
+					<a href="/goods/detail?goods_id={{ adv.id }}"><img src="{% static adv.gpic %}"></a>
+					<div class="prize">¥ {{ adv.gprice }}</div>
 				</li>
-				<li>
-					<h4><a href="#">扇贝</a></h4>
-					<a href="#"><img src="{% static 'user/images/goods/goods019.jpg' %}"></a>
-					<div class="prize">¥ 46.00</div>
-				</li>
-				<li>
-					<h4><a href="#">冷冻秋刀鱼</a></h4>
-					<a href="#"><img src="{% static 'user/images/goods/goods020.jpg' %}"></a>
-					<div class="prize">¥ 19.00</div>
-				</li>
-				<li>
-					<h4><a href="#">基围虾</a></h4>
-					<a href="#"><img src="{% static 'user/images/goods/goods021.jpg' %}"></a>
-					<div class="prize">¥ 25.00</div>
-				</li>
+				{% endfor %}
 			</ul>
 		</div>
 	</div>
