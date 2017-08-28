@@ -99,18 +99,15 @@ def user_info(request):
     for goods_id in goods_ids1:
         goods_list.append(GoodsInfo.objects.get(id=int(goods_id)))
 
-
     user = User.usermanager.get(id=request.session['user_id'])
-    context = {'username': user.username, 'mobile': user.mobile, 'address': user.address, 'goods_list': goods_list}
+    context = {'mobile': user.mobile, 'address': user.address, 'goods_list': goods_list}
     return render(request, 'df_user/user_center_info.html', context)
 
 
 # 返回用户订单页面及需要的数据
 @user_decorator.login
 def user_order(request):
-    user = User.usermanager.get(id=request.session['user_id'])
-    context = {'username': user.username}
-    return render(request, 'df_user/user_center_order.html', context)
+    return render(request, 'df_user/user_center_order.html')
 
 
 # 返回用户收货地址页面及需要的数据

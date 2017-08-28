@@ -26,25 +26,6 @@
 
 
 		$(function () {
-//			price = parseFloat($('.num_show').val());
-//			$('.add').click(function () {
-//				$.get('/goods/goods_num?type=add&num='+$('.num_show').val(), function (data) {
-//					$('.num_show').val(data.newnum)
-//					totle = (data.newnum)*price;
-//					$('.total em').text(totle.toFixed(2)+"0元")
-//				})
-//			})
-//
-//			$('.minus').click(function () {
-//				if($('.num_show').val()>1){
-//					$.get('/goods/goods_num?type=minus&num='+$('.num_show').val(), function (data) {
-//						$('.num_show').val(data.newnum)
-//						totle = parseInt(data.newnum*{{ goods.gprice }})
-//						$('.total em').text(totle+"0元")
-//					})
-//				}
-//			})
-
 			$('.num_show').blur(function () {
 				num=parseInt($('.num_show').val());
 				if (num<=1){
