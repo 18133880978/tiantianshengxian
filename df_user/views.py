@@ -6,6 +6,7 @@ from . import user_decorator
 import json
 from df_goods.models import *
 from df_cart.models import *
+from df_order.models import *
 
 
 # Create your views here.
@@ -106,7 +107,20 @@ def user_info(request):
 # 返回用户订单页面及需要的数据
 @user_decorator.login
 def user_order(request):
-    return render(request, 'df_user/user_center_order.html')
+    uid = request.session['user_id']
+    order_list = OrderInfo.objects.filter(user_id=uid)
+
+    print(order_list)
+
+    detail_list = []
+
+    for order in order_list:
+        detail_list.append(OrderDetailInfo.objects.filter(order_id=order.oid))
+
+    print(detail_list)
+
+    context = {'order_list': order_list, 'detail_list': detail_list}
+    return render(request, 'df_user/user_center_order.html', context)
 
 
 # 返回用户收货地址页面及需要的数据
