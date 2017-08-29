@@ -5,6 +5,7 @@ from .models import *
 from . import user_decorator
 import json
 from df_goods.models import *
+from df_cart.models import *
 
 
 # Create your views here.
@@ -35,8 +36,6 @@ def login_handle(request):
             if pwd == user[0].passwd:
                 url = request.COOKIES.get('url', '/user/info')
                 red = HttpResponseRedirect(url)
-                # context = {'username': user[0].username, 'mobile': user[0].mobile, 'address': user[0].address}
-                # response = render_to_response('df_user/user_center_info.html', context)
                 if remember != 0:
                     red.set_cookie('username', username)
                 else:

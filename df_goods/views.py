@@ -17,7 +17,7 @@ def index(request):
     username = request.session.get('username', '')
 
     context = {'newfruit': newfruit, 'hotfruit': hotfruit, 'hotseafood': hotseafood,
-               'advseafood': advseafood, 'username':username}
+               'advseafood': advseafood, 'username': username,}
 
     return render(request, 'index.html', context)
 
@@ -30,9 +30,10 @@ def detail(request):
     goods.save()
 
     other_goods = TypeInfo.objects.get(pk=goods.gtype_id).goodsinfo_set.exclude(pk=goods_id).order_by('-id')[0:4]
+
     context = {'goods': goods, 'other_goods': other_goods, 'username': username}
+
     response = render(request, 'df_goods/detail.html', context)
-    # response.set_cookie('goods_ids', '', max_age=-1)
 
     goods_ids = request.COOKIES.get('goods_ids', '')
 

@@ -74,8 +74,8 @@
 			<input type="button" class="input_btn fr" name="" value="搜索">
 		</div>
 		<div class="guest_cart fr">
-			<a href="cart.html" class="cart_name fl">我的购物车</a>
-			<div class="goods_count fl" id="show_count">1</div>
+			<a href="/cart" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl" id="show_count">{{ cart_num }}</div>
 		</div>
 	</div>
 
@@ -198,11 +198,13 @@
 				'left': $to_y+7,
 				'top': $to_x+7},
 				"fast", function() {
-					$(".add_jump").fadeOut('fast',function(){
-						$('#show_count').html(2);
-					});
+					$(".add_jump").fadeOut('fast',function(){});});
 
-			});
+			num = $('.num_show').val();
+			$.get('/cart/add?goods_id={{ goods.id }}&count='+num,function (data) {
+				$('.goods_count').html(data.count)
+			})
+
 		})
 	</script>
 	
