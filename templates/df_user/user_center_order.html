@@ -38,7 +38,7 @@
 					<span>|</span>
 					<a href="/user/info">用户中心</a>
 					<span>|</span>
-					<a href="cart.html">我的购物车</a>
+					<a href="/cart">我的购物车</a>
 					<span>|</span>
 					<a href="/user/order">我的订单</a>
 				</div>
@@ -66,7 +66,7 @@
 		</div>
 		<div class="right_content clearfix">
 				<h3 class="common_title2">全部订单</h3>
-				{% for detail in detail_list %}
+				{% for detail in page %}
 				<ul class="order_list_th w978 clearfix">
 					<li class="col01">{{ detail.0.order.odate }}</li>
 					<li class="col02">订单号：{{ detail.0.order.oid }}</li>
@@ -99,13 +99,25 @@
 				{% endfor %}
 
 				<div class="pagenation">
-					<a href="#"><上一页</a>
-					<a href="#" class="active">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
-					<a href="#">下一页></a>
+					{% if page.has_previous %}
+						<a href="/user/order?page_id={{ page.previous_page_number }}">上一页</a>
+					{% else %}
+						<a href="javascript:;">上一页</a>
+					{% endif %}
+
+					{% for pindex in paginator.page_range %}
+						{% if pindex == page.number %}
+							<a href="javascript:;" class="active">{{ pindex }}</a>
+						{% else %}
+							<a href="/user/order?page_id={{pindex}}">{{ pindex }}</a>
+						{% endif %}
+					{% endfor %}
+
+					{% if page.has_next %}
+						<a href="/user/order?page_id={{ page.next_page_number }}">下一页</a>
+					{% else %}
+						<a href="javascript:;">下一页</a>
+					{% endif %}
 				</div>
 		</div>
 	</div>

@@ -1,15 +1,18 @@
 from datetime import datetime
 
 from decimal import Decimal
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from df_cart.models import *
 from df_user.models import *
 from .models import *
 from django.db import transaction
+from df_user import user_decorator
 
 # Create your views here.
 
 
+@transaction.atomic()
+@user_decorator.login
 def place_order(request):
     cart_ids = request.GET.get('cart_ids').split()
 
@@ -26,7 +29,7 @@ def place_order(request):
     context = {'cart_list': cart_list, 'address': address_str}
     return render(request, 'df_order/place_order.html', context)
 
-
+@user_decorator.login
 def order_handle(request):
     tran_id = transaction.savepoint()   # 创建回滚点
 
@@ -35,7 +38,6 @@ def order_handle(request):
     total = Decimal(request.POST.get('total'))
 
     oaddress = request.POST.get('oaddress')
-    print(oaddress)
 
     try:
         # 创建订单对象

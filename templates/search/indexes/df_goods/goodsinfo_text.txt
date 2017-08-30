@@ -1,0 +1,4 @@
+# 指定对哪些列的内容进行检索
+{{ object.gtitle }}
+{{ object.gintroduce }}
+{{ object.gcontent }}

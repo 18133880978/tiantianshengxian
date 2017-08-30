@@ -25,8 +25,10 @@
 		function go_order() {
 			cart_id=""
 			$('.cart_list_td').each(function () {
-				a=$(this).attr('id')
-				cart_id=a+" "+cart_id
+				if($(this).find('.col01').find(':checkbox').prop('checked')){
+					a=$(this).attr('id')
+					cart_id=a+" "+cart_id
+				}
 			})
 
 			location.href="/order/place_order?cart_ids="+cart_id
@@ -35,6 +37,7 @@
 		function total() {
 			total1=0;
 			total_count=0;
+			piece_total=0
 			$('.col07').each(function () {
 					//获取数量
 					count = $(this).prev().find('input').val();
@@ -44,12 +47,17 @@
 					total0 = parseInt(count) * parseFloat(price);
 					$(this).text(total0.toFixed(2));
 					//计算总金额
+					if($(this).parent().find('.col01').find(':checkbox').prop('checked')){
 					total1 += total0;
 					//计算商品总数
 					total_count++
+					piece_total+=parseInt(count)
+					}
+
 			})
 			$('.total').text(total1.toFixed(2))
 			$('#total_count').text(total_count)
+			$('#piece').text(piece_total)
 		}
 
 		$(function () {
@@ -63,6 +71,7 @@
 
 			//选择
 			$(':checkbox:not(#check_all)').click(function () {
+				total()
 				if($(this).prop('checked')){
 					if($(':checked').length+1==$(':checkbox').length){
 						$('#check_all').prop('checked',true);
@@ -175,7 +184,7 @@
 	<ul class="settlements">
 		<li class="col01"><input id="check_all" type="checkbox" name="" checked=""></li>
 		<li class="col02">全选</li>
-		<li class="col03">合计(不含运费)：<span>¥</span><em class="total">42.60</em><br>共计<b>2</b>件商品</li>
+		<li class="col03">合计(不含运费)：<span>¥</span><em class="total">42.60</em><br>共计<b id="piece">2</b>件商品</li>
 		<li class="col04"><a href="javascript:go_order();">去结算</a></li>
 	</ul>
 

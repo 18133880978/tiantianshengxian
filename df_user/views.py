@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.http import JsonResponse
+from django.core.paginator import *
 from hashlib import *
 from .models import *
 from . import user_decorator
@@ -92,15 +93,20 @@ def logout(request):
 # 返回用户个人信息页面及需要的数据
 @user_decorator.login
 def user_info(request):
-    goods_ids = request.COOKIES.get('goods_ids', '')
-    goods_ids1 = goods_ids.split(',')
-    goods_list = []
-
-    for goods_id in goods_ids1:
-        goods_list.append(GoodsInfo.objects.get(id=int(goods_id)))
-
     user = User.usermanager.get(id=request.session['user_id'])
-    context = {'mobile': user.mobile, 'address': user.address, 'goods_list': goods_list}
+
+    goods_ids = request.COOKIES.get('goods_ids', '')
+
+    if goods_ids == '':
+        context = {'mobile': user.mobile, 'address': user.address}
+    else:
+        goods_ids1 = goods_ids.split(',')
+        goods_list = []
+
+        for goods_id in goods_ids1:
+            goods_list.append(GoodsInfo.objects.get(id=int(goods_id)))
+            context = {'mobile': user.mobile, 'address': user.address, 'goods_list': goods_list}
+
     return render(request, 'df_user/user_center_info.html', context)
 
 
@@ -108,9 +114,8 @@ def user_info(request):
 @user_decorator.login
 def user_order(request):
     uid = request.session['user_id']
+    page_id = request.GET.get('page_id', '1')
     order_list = OrderInfo.objects.filter(user_id=uid)
-
-    print(order_list)
 
     detail_list = []
 
@@ -119,7 +124,14 @@ def user_order(request):
 
     print(detail_list)
 
-    context = {'order_list': order_list, 'detail_list': detail_list}
+    paginator = Paginator(detail_list, 5)
+
+    page = paginator.page(int(page_id))
+
+    print(page_id)
+    print(page)
+
+    context = {'detail_list': detail_list, 'paginator': paginator, 'page': page}
     return render(request, 'df_user/user_center_order.html', context)
 
 
@@ -147,6 +159,7 @@ def user_site(request):
 
 
 # 省市区数据
+@user_decorator.login
 def areas(request):
     area_id = request.GET.get('area_id')
     if area_id == '':
